@@ -10,11 +10,25 @@ DEFAULT_FILENAME = "words.txt"
 DEFAULT_DUPLICATES = False
 
 
-def sort_list(items, ascending=True):
+def _remove_duplicates_preserve_order(items):
+    seen = set()
+    unique_items = []
+    for item in items:
+        if item in seen:
+            continue
+        seen.add(item)
+        unique_items.append(item)
+    return unique_items
+
+
+def sort_list(items, ascending=True, remove_duplicates=False):
     if not isinstance(items, list):
         raise RuntimeError(f"No puede ordenar {type(items)}")
 
-    return sorted(items, reverse=(not ascending))
+    items_to_sort = (
+        _remove_duplicates_preserve_order(items) if remove_duplicates else items
+    )
+    return sorted(items_to_sort, reverse=(not ascending))
 
 
 def remove_duplicates_from_list(items):
@@ -24,13 +38,15 @@ def remove_duplicates_from_list(items):
 if __name__ == "__main__":
     filename = DEFAULT_FILENAME
     remove_duplicates = DEFAULT_DUPLICATES
-    if len(sys.argv) == 3:
-        filename = sys.argv[1]
-        remove_duplicates = sys.argv[2].lower() == "yes"
-    else:
-        print("Se debe indicar el fichero como primer argumento")
-        print("El segundo argumento indica si se quieren eliminar duplicados")
-        sys.exit(1)
+    for arg in sys.argv[1:]:
+        if arg.lower() in ("--dedupe", "--remove-duplicates"):
+            remove_duplicates = True
+        elif filename == DEFAULT_FILENAME:
+            filename = arg
+        else:
+            print(f"Argumento no reconocido: {arg}")
+            print("Uso: python main.py [fichero] [--dedupe]")
+            sys.exit(1)
 
     print(f"Se leerán las palabras del fichero {filename}")
     file_path = os.path.join(".", filename)
@@ -43,7 +59,4 @@ if __name__ == "__main__":
         print(f"El fichero {filename} no existe")
         word_list = ["ravenclaw", "gryffindor", "slytherin", "hufflepuff"]
 
-    if remove_duplicates:
-        word_list = remove_duplicates_from_list(word_list)
-
-    print(sort_list(word_list))
+    print(sort_list(word_list, remove_duplicates=remove_duplicates))
