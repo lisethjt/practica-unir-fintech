@@ -25,3 +25,6 @@ Con Makefile (sin Docker):
  
 ```bash
 make run-local
+## Ejecución en Docker
+
+make run archivo=<nombre_archivo.txt>
