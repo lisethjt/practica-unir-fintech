@@ -45,7 +45,7 @@ if __name__ == "__main__":
             filename = arg
         else:
             print(f"Argumento no reconocido: {arg}")
-            print("Uso: python main.py [fichero] [--dedupe]")
+            print("Uso: python main.py [fichero] [--dedupe|--remove-duplicates]")
             sys.exit(1)
 
     print(f"Se leerán las palabras del fichero {filename}")
