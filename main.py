@@ -1,4 +1,14 @@
-"""
+"""Lee un fichero de palabras, opcionalmente elimina duplicados y las imprime ordenadas.
+
+Uso:
+    python3 main.py <filename> <yes|no>
+
+Argumentos:
+    filename : ruta al fichero de texto con una palabra por línea.
+    yes|no   : "yes" elimina palabras duplicadas; "no" conserva la lista tal cual.
+
+Si el fichero indicado no existe se usa una lista de ejemplo con las casas de Hogwarts.
+
 License: Apache
 Organization: UNIR
 """
@@ -11,6 +21,19 @@ DEFAULT_DUPLICATES = False
 
 
 def sort_list(items, ascending=True):
+    """Devuelve una nueva lista con los elementos ordenados.
+
+    Args:
+        items: lista de elementos comparables entre sí.
+        ascending: si es True (por defecto) ordena de menor a mayor;
+            si es False, en orden inverso.
+
+    Returns:
+        list: nueva lista ordenada. No modifica la original.
+
+    Raises:
+        RuntimeError: si `items` no es una lista.
+    """
     if not isinstance(items, list):
         raise RuntimeError(f"No puede ordenar {type(items)}")
 
@@ -18,6 +41,17 @@ def sort_list(items, ascending=True):
 
 
 def remove_duplicates_from_list(items):
+    """Elimina los elementos duplicados de una lista.
+
+    Nota: el orden original no se preserva, ya que se usa `set` internamente.
+    Si se invoca junto con `sort_list` el orden se restablece al ordenar.
+
+    Args:
+        items: lista de elementos hasheables.
+
+    Returns:
+        list: lista sin duplicados, en orden indeterminado.
+    """
     return list(set(items))
 
 
